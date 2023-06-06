@@ -1,0 +1,31 @@
+﻿
+@using Kendo.Mvc.UI;
+@using MVC_CSP.Models;
+@{
+    ViewBag.Title = "Home Page";
+}
+@model IEnumerable<GridDetails>
+
+@(
+        Html.Kendo().Grid<GridDetails>().Name("grdGridDetails").Columns(columns =>
+        {
+            columns.Select().Width(40);
+            columns.Bound(c => c.EmployeeId);
+            columns.Bound(c => c.First_Name);
+            columns.Bound(c => c.Last_Name);
+            columns.Bound(c => c.Address);
+            columns.Bound(c => c.Phone);
+        })
+        .Sortable()
+        .Filterable()
+        .Groupable()
+        .Scrollable(s=>s.Height("auto"))
+        .Pageable()
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("GetDatalist", "Home"))
+        .PageSize(5).Model(Model=> Model.Id(p =>p.EmployeeId))
+
+        ).Deferred()
+    )
+@(Html.Kendo().DeferredScriptFile())
